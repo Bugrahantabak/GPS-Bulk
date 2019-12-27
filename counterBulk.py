@@ -8,6 +8,19 @@ import sys
 sys.path.append('./venv/Lib')
 import requests
 
+
+def close_files():
+  # Close files
+    file_soapOut.close()
+    file_failOut.close()
+    print('\n#close_files\n')
+
+def close_files_and_exit():
+    file_soapOut.close()
+    file_failOut.close()
+    print('\n#close_files_and_exit\n')
+    sys.exit(1)
+
 '''
 ##########################################################
 How to use:
@@ -15,7 +28,7 @@ How to use:
 2- Edit the PROV user password.
 3- Edit the PROV IP and service.
 4- Edit the body fields with your soap request. Your request should be inside of triple quotes (""").
-5- Set counter_from and counter_until for loop. 
+5- Set counter_from and counter_until for loop.
 6- Execute the program.
 7- Check soapOut.txt and failOut.txt files for outputs.
 ##########################################################
@@ -31,7 +44,7 @@ password = 'admin'
 
 # PROV IP and service
 # url = "http://47.168.155.134:8080/prov/services/User"
-url = "http://47.168.155.134:8080/prov/services/DomainAdminService"
+url = "http://47.168.155.1341:8080/prov/services/DomainAdminService"
 
 # DO NOT CHANGE - Header of the Soap file
 # headers = {'content-type': 'text/xml', 'SOAPAction': ''}
@@ -88,22 +101,22 @@ for i in range(counter_from, counter_until):
     except requests.exceptions.HTTPError as errh:
         print(str(i) + '. Http Error: ', errh)
         file_failOut.writelines(str(i) + '. Http Error: ' + str(errh) + ')\n')
-        sys.exit(1)
+        close_files_and_exit()
     except requests.exceptions.ConnectionError as errc:
         print(str(i) + '. Error Connecting: ', errc)
         file_failOut.writelines(str(i) + '. Error Connecting: ' + str(errc) + ')\n')
-        sys.exit(1)
+        close_files_and_exit()
     except requests.exceptions.Timeout as errt:
         print(str(i) + '. Timeout Error: ', errt)
         file_failOut.writelines(str(i) + '. Timeout Error: ' + str(errt) + ')\n')
-        sys.exit(1)
+        close_files_and_exit()
     except requests.exceptions.RequestException as err:
         print(str(i) + '. Unknown Error: ', err)
         file_failOut.writelines(str(i) + '. Unknown Error: ' + str(err) + ')\n')
-        sys.exit(1)
+        close_files_and_exit()
 
     # Check response status code
-    if response.status_code == 200: #TODO: Update for 2XX 
+    if response.status_code == 200: #TODO: Update for 2XX
         file_soapOut.writelines(str(i) + '. ' + str(response.content) + '\n')
         print(str(i) + ' Success.')
     else:
@@ -111,9 +124,8 @@ for i in range(counter_from, counter_until):
             str(i) + '. Failed with code: ' + str(response.status_code) + ' ' + str(response.content) + '\n')
         print(str(i) + '. Failed with code: ' + str(response.status_code) + ' ' + str(response.content))
 
-# Close files
-file_soapOut.close()
-file_failOut.close()
+
+close_files()
 
 # Done!
 print('Done!')
@@ -122,7 +134,7 @@ print('Done!')
 
 
 '''
-# extra code for reading from file 
+# extra code for reading from file
 
 fileOrj = open('input.txt', 'r')
 Lines = fileOrj.readlines()
