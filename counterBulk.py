@@ -7,14 +7,10 @@ import datetime
 import sys
 sys.path.append('./venv/Lib')
 import requests
-
-
-
-
-
+import config
 
 '''
-##########################################################
+##################################################################
 How to use:
 1- Edit the PROV user name.
 2- Edit the PROV user password.
@@ -23,59 +19,43 @@ How to use:
 5- Set counter_from and counter_until for loop.
 6- Execute the program.
 7- Check soapOut.txt and failOut.txt files for outputs.
-##########################################################
+##################################################################
 '''
 
 # PROV user name
-# user = 'admin'
-user = 'admin'
+user = config.config["prov_user_name"]
 
 # PROV user password
-# password = 'admin'
-password = 'admin'
+password = config.config["prov_user_password"]
 
 # PROV IP and service
-# url = "http://47.168.155.134:8080/prov/services/User"
-url = "http://47.168.155.1341:8080/prov/services/DomainAdminService"
+url = config.config["prov_url"]
 
 # DO NOT CHANGE - Header of the Soap file
 # headers = {'content-type': 'text/xml', 'SOAPAction': ''}
 headers = {'content-type': 'text/xml', 'SOAPAction': ''}
 
 # Soap request body between """ """
-# body =  """ <soapenv:Envelope  ...  </soapenv:Envelope>"""  //TODO: update
+requestXML=config.xmlRequest["xml"]
+print(requestXML)
+body=requestXML.strip().split('$')
 
-
-bodyFirstPart = """<soapenv:Envelope xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:user="user.ws.nortelnetworks.com">
-   <soapenv:Header/>
-   <soapenv:Body>
-      <user:getUser soapenv:encodingStyle="http://schemas.xmlsoap.org/soap/encoding/">
-         <in0 xsi:type="com:UserNaturalKeyDO" xmlns:com="common.ws.nortelnetworks.com">
-            <name xsi:type="soapenc:string" xmlns:soapenc="http://schemas.xmlsoap.org/soap/encoding/">"""
-
-bodySecondPart = """</name>
-         </in0>
-      </user:getUser>
-   </soapenv:Body>
-</soapenv:Envelope>"""
 
 # Counter from
-counter_from = 5320
+counter_from = int(config.counterBulkConfig["counter_from"])
 # Counter until
-counter_until = 6000
+counter_until = int(config.counterBulkConfig["counter_until"])
 
 # Open output files for success logs (when the status_code is 2XX) and fail logs (when the status_code is NOT 2XX)
 try:
-    # file_soapOut = open('\\soapOut.txt', 'a')
-    file_soapOut = open('soapOut.txt', 'a')
+    file_soapOut = open(config.config["success_log_file_location"], 'a')
 except OSError:
-    print('Error: Unable to open soapOut.txt file')
+    print('Error: Unable to open success file.')
     sys.exit(1)
 try:
-    # file_failOut = open('D:\\Users\\btabak\\Desktop\\soapbulk\\failOut.txt', 'a')
-    file_failOut = open('failOut.txt', 'a')
+    file_failOut = open(config.config["fail_log_file_location"], 'a')
 except OSError:
-    print('Error: Unable to open failOut.txt file')
+    print('Error: Unable to open fail file.')
     sys.exit(1)
 
 # Insert local timestamp to both files
@@ -92,7 +72,7 @@ for i in range(counter_from, counter_until):
 
     # Send the request
     try:
-        response = requests.post(url, data=bodyFirstPart + str(i) + bodySecondPart, headers=headers,
+        response = requests.post(url, data=body[0] + str(i) + body[1], headers=headers,
                                  auth=(user, password))
     except requests.exceptions.HTTPError as errh:
         print(str(i) + '. Http Error: ', errh)
@@ -124,7 +104,7 @@ for i in range(counter_from, counter_until):
             str(i) + '. Failed with code: ' + str(response.status_code) + ' ' + str(response.content) + '\n')
         print(str(i) + '. Failed with code: ' + str(response.status_code) + ' ' + str(response.content))
 
-
+# Close files
 close_files()
 
 # Done!
