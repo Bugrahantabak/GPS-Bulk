@@ -9,17 +9,9 @@ sys.path.append('./venv/Lib')
 import requests
 
 
-def close_files():
-  # Close files
-    file_soapOut.close()
-    file_failOut.close()
-    print('\n#close_files\n')
 
-def close_files_and_exit():
-    file_soapOut.close()
-    file_failOut.close()
-    print('\n#close_files_and_exit\n')
-    sys.exit(1)
+
+
 
 '''
 ##########################################################
@@ -54,16 +46,16 @@ headers = {'content-type': 'text/xml', 'SOAPAction': ''}
 # body =  """ <soapenv:Envelope  ...  </soapenv:Envelope>"""  //TODO: update
 
 
-bodyFirstPart = """<soapenv:Envelope xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:dom="domain.ws.nortelnetworks.com">
+bodyFirstPart = """<soapenv:Envelope xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:user="user.ws.nortelnetworks.com">
    <soapenv:Header/>
    <soapenv:Body>
-      <dom:removeDomain soapenv:encodingStyle="http://schemas.xmlsoap.org/soap/encoding/">
-         <in0 xsi:type="com:DomainNaturalKeyDO" xmlns:com="common.ws.nortelnetworks.com">
-            <name xsi:type="soapenc:string" xmlns:soapenc="http://schemas.xmlsoap.org/soap/encoding/">bulkdomain"""
+      <user:getUser soapenv:encodingStyle="http://schemas.xmlsoap.org/soap/encoding/">
+         <in0 xsi:type="com:UserNaturalKeyDO" xmlns:com="common.ws.nortelnetworks.com">
+            <name xsi:type="soapenc:string" xmlns:soapenc="http://schemas.xmlsoap.org/soap/encoding/">"""
 
 bodySecondPart = """</name>
          </in0>
-      </dom:removeDomain>
+      </user:getUser>
    </soapenv:Body>
 </soapenv:Envelope>"""
 
@@ -90,6 +82,10 @@ except OSError:
 file_failOut.writelines('\n\n\n######################\n' + str(datetime.datetime.now()) + '\n######################\n\n')
 file_soapOut.writelines('\n\n\n######################\n' + str(datetime.datetime.now()) + '\n######################\n\n')
 
+def close_files():
+  # Close files
+    file_soapOut.close()
+    file_failOut.close()
 
 # Loop
 for i in range(counter_from, counter_until):
@@ -101,19 +97,23 @@ for i in range(counter_from, counter_until):
     except requests.exceptions.HTTPError as errh:
         print(str(i) + '. Http Error: ', errh)
         file_failOut.writelines(str(i) + '. Http Error: ' + str(errh) + ')\n')
-        close_files_and_exit()
+        close_files()
+        sys.exit(1)
     except requests.exceptions.ConnectionError as errc:
         print(str(i) + '. Error Connecting: ', errc)
         file_failOut.writelines(str(i) + '. Error Connecting: ' + str(errc) + ')\n')
-        close_files_and_exit()
+        close_files()
+        sys.exit(1)
     except requests.exceptions.Timeout as errt:
         print(str(i) + '. Timeout Error: ', errt)
         file_failOut.writelines(str(i) + '. Timeout Error: ' + str(errt) + ')\n')
-        close_files_and_exit()
+        close_files()
+        sys.exit(1)
     except requests.exceptions.RequestException as err:
         print(str(i) + '. Unknown Error: ', err)
         file_failOut.writelines(str(i) + '. Unknown Error: ' + str(err) + ')\n')
-        close_files_and_exit()
+        close_files()
+        sys.exit(1)
 
     # Check response status code
     if response.status_code == 200: #TODO: Update for 2XX
@@ -129,18 +129,3 @@ close_files()
 
 # Done!
 print('Done!')
-
-
-
-
-'''
-# extra code for reading from file
-
-fileOrj = open('input.txt', 'r')
-Lines = fileOrj.readlines()
-for line in Lines:
-    oneLine = line.strip()
-    spt = oneLine.split()
-    first = spt[0]
-fileOrj.close()
-'''

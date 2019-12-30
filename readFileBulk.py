@@ -8,6 +8,7 @@ import sys
 sys.path.append('./venv/Lib')
 import requests
 
+
 '''
 #TODO: ReadFile
 ##########################################################
@@ -16,7 +17,7 @@ How to use:
 2- Edit the PROV user password.
 3- Edit the PROV IP and service.
 4- Edit the body fields with your soap request. Your request should be inside of triple quotes (""").
-5- Set counter_from and counter_until for loop. 
+5- Set counter_from and counter_until for loop.
 6- Execute the program.
 7- Check soapOut.txt and failOut.txt files for outputs.
 ##########################################################
@@ -44,18 +45,20 @@ headers = {'content-type': 'text/xml', 'SOAPAction': ''}
 # body =  """ <soapenv:Envelope  ...  </soapenv:Envelope>"""  //TODO: update
 
 
-bodyFirstPart = """<soapenv:Envelope xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:dom="domain.ws.nortelnetworks.com">
+bodyFirstPart = """<soapenv:Envelope xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:user="user.ws.nortelnetworks.com">
    <soapenv:Header/>
    <soapenv:Body>
-      <dom:removeDomain soapenv:encodingStyle="http://schemas.xmlsoap.org/soap/encoding/">
-         <in0 xsi:type="com:DomainNaturalKeyDO" xmlns:com="common.ws.nortelnetworks.com">
-            <name xsi:type="soapenc:string" xmlns:soapenc="http://schemas.xmlsoap.org/soap/encoding/">bulkdomain"""
+      <user:getUser soapenv:encodingStyle="http://schemas.xmlsoap.org/soap/encoding/">
+         <in0 xsi:type="com:UserNaturalKeyDO" xmlns:com="common.ws.nortelnetworks.com">
+            <name xsi:type="soapenc:string" xmlns:soapenc="http://schemas.xmlsoap.org/soap/encoding/">"""
 
 bodySecondPart = """</name>
          </in0>
-      </dom:removeDomain>
+      </user:getUser>
    </soapenv:Body>
 </soapenv:Envelope>"""
+
+
 
 
 # Open output files for success logs (when the status_code is 2XX) and fail logs (when the status_code is NOT 2XX)
@@ -74,8 +77,8 @@ except OSError:
 
 try:
     #Read Input File
-    fileOrj = open('input.txt', 'r')
-    Lines = fileOrj.readlines()
+    fileInput = open('input.txt', 'r')
+    Lines = fileInput.readlines()
 except OSError:
     print('Error: Unable to open input.txt file')
     sys.exit(1)
@@ -84,7 +87,11 @@ except OSError:
 file_failOut.writelines('\n\n\n######################\n' + str(datetime.datetime.now()) + '\n######################\n\n')
 file_soapOut.writelines('\n\n\n######################\n' + str(datetime.datetime.now()) + '\n######################\n\n')
 
-
+def close_files():
+  # Close files
+    file_soapOut.close()
+    file_failOut.close()
+    fileInput.close()
 
 # Loop
 for line in Lines:
@@ -98,22 +105,26 @@ for line in Lines:
     except requests.exceptions.HTTPError as errh:
         print(str(i) + '. Http Error: ', errh)
         file_failOut.writelines(str(i) + '. Http Error: ' + str(errh) + ')\n')
+        close_files()
         sys.exit(1)
     except requests.exceptions.ConnectionError as errc:
         print(str(i) + '. Error Connecting: ', errc)
         file_failOut.writelines(str(i) + '. Error Connecting: ' + str(errc) + ')\n')
+        close_files()
         sys.exit(1)
     except requests.exceptions.Timeout as errt:
         print(str(i) + '. Timeout Error: ', errt)
         file_failOut.writelines(str(i) + '. Timeout Error: ' + str(errt) + ')\n')
+        close_files()
         sys.exit(1)
     except requests.exceptions.RequestException as err:
         print(str(i) + '. Unknown Error: ', err)
         file_failOut.writelines(str(i) + '. Unknown Error: ' + str(err) + ')\n')
+        close_files()
         sys.exit(1)
 
     # Check response status code
-    if response.status_code == 200: #TODO: Update for 2XX 
+    if response.status_code == 200: #TODO: Update for 2XX
         file_soapOut.writelines(str(i) + '. ' + str(response.content) + '\n')
         print(str(i) + ' Success.')
     else:
@@ -122,11 +133,7 @@ for line in Lines:
         print(str(i) + '. Failed with code: ' + str(response.status_code) + ' ' + str(response.content))
 
 # Close files
-file_soapOut.close()
-file_failOut.close()
-fileOrj.close()
+close_files()
+
 # Done!
 print('Done!')
-
-
-
