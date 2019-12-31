@@ -7,9 +7,9 @@ config =  {
     "prov_user_name" : "admin",
     "prov_user_password" : "admin",
     "prov_url"  :"http://47.168.155.134:8080/prov/services/UserAdminService",
-    "success_log_file_location" : "success_log.txt",
-    "fail_log_file_location" : "fail_log.txt",
-    "input_file_location" : "input.txt"
+    "success_log_file_name" : "success_log.txt",
+    "fail_log_file_name" : "fail_log.txt",
+    "input_file_name" : "input.txt"
     }
 
 counterBulkConfig ={
@@ -18,7 +18,7 @@ counterBulkConfig ={
     }
 
 readFileBulkConfig ={
-    "input_file_location" : "input.txt"
+    "input_file_name" : "input.txt"
     }
 
 xmlRequest={

@@ -49,12 +49,12 @@ counter_until = int(config.counterBulkConfig["counter_until"])
 
 # Open output files for success logs (when the status_code is 2XX) and fail logs (when the status_code is NOT 2XX)
 try:
-    file_soapOut = open(config.config["success_log_file_location"], 'a')
+    file_soapOut = open(config.config["success_log_file_name"], 'a')
 except OSError:
     print('Error: Unable to open success file.')
     sys.exit(1)
 try:
-    file_failOut = open(config.config["fail_log_file_location"], 'a')
+    file_failOut = open(config.config["fail_log_file_name"], 'a')
 except OSError:
     print('Error: Unable to open fail file.')
     sys.exit(1)

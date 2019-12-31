@@ -44,20 +44,20 @@ body=requestXML.strip().split('$')
 # Open output files for success logs (when the status_code is 2XX) and fail logs (when the status_code is NOT 2XX)
 try:
     # file_soapOut = open('\\soapOut.txt', 'a')
-    file_soapOut = open(config.config["success_log_file_location"], 'a')
+    file_soapOut = open(config.config["success_log_file_name"], 'a')
 except OSError:
     print('Error: Unable to open success file.')
     sys.exit(1)
 try:
     # file_failOut = open('D:\\Users\\btabak\\Desktop\\soapbulk\\failOut.txt', 'a')
-    file_failOut = open(config.config["fail_log_file_location"], 'a')
+    file_failOut = open(config.config["fail_log_file_name"], 'a')
 except OSError:
     print('Error: Unable to open fail file.')
     sys.exit(1)
 
 try:
     #Read Input File
-    fileInput = open(config.readFileBulkConfig["input_file_location"], 'r')
+    fileInput = open(config.readFileBulkConfig["input_file_name"], 'r')
     Lines = fileInput.readlines()
 except OSError:
     print('Error: Unable to open input file.')
@@ -75,8 +75,10 @@ def close_files():
 
 # Loop
 for line in Lines:
-    oneLine = line.strip()
-    spt = oneLine.split()
+    oneLine = line.strip() # Strip the line
+    if not oneLine: # Check for empty lines
+        continue # Continue
+    spt = oneLine.split() # Split every param
     i = spt[0]
     # Send the request
     try:
