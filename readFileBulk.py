@@ -1,6 +1,6 @@
 #! /usr/bin/python
 __author__ = 'Bugrahan Tabak'
-__version__ = 'v1.1'
+__version__ = 'v1.3'
 __date__ = '12.26.2019'
 
 import datetime
@@ -10,7 +10,7 @@ import requests
 import config
 
 '''
-#TODO: ReadFile
+#TODO: update ReadFile
 ##################################################################
 How to use:
 1- Edit the PROV user name.
@@ -41,9 +41,6 @@ requestXML=config.xmlRequest["xml"]
 print(requestXML)
 body=requestXML.strip().split('$')
 
-
-
-
 # Open output files for success logs (when the status_code is 2XX) and fail logs (when the status_code is NOT 2XX)
 try:
     # file_soapOut = open('\\soapOut.txt', 'a')
@@ -60,10 +57,10 @@ except OSError:
 
 try:
     #Read Input File
-    fileInput = open('input.txt', 'r')
+    fileInput = open(config.readFileBulkConfig["input_file_location"], 'r')
     Lines = fileInput.readlines()
 except OSError:
-    print('Error: Unable to open input.txt file')
+    print('Error: Unable to open input file.')
     sys.exit(1)
 
 # Insert local timestamp to both files

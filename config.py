@@ -4,15 +4,17 @@ config =  {
     "prov_url"  :"http://47.168.155.134:8080/prov/services/UserAdminService",
     "success_log_file_location" : "success_log.txt",
     "fail_log_file_location" : "fail_log.txt",
-    "input_file_location" : "input.txt"}
+    "input_file_location" : "input.txt"
+    }
 
 counterBulkConfig ={
     "counter_from" : 5200,
-    "counter_until" : 6000}
+    "counter_until" : 6000
+    }
 
 readFileBulkConfig ={
     "input_file_location" : "input.txt"
-}
+    }
 
 xmlRequest={
     "xml" : """<soapenv:Envelope xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:user="user.ws.nortelnetworks.com">
