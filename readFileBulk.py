@@ -25,7 +25,6 @@ headers = {'content-type': 'text/xml', 'SOAPAction': ''}
 
 # Read XML requst and split with '$' param.
 requestXML=config.xmlRequest["xml"]
-print(requestXML)
 body=requestXML.strip().split('$')
 
 # Open output files for success logs (when the status_code is 2XX) and fail logs (when the status_code is NOT 2XX)

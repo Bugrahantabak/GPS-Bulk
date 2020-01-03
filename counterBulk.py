@@ -25,7 +25,6 @@ headers = {'content-type': 'text/xml', 'SOAPAction': ''}
 
 # Soap request body between """ """
 requestXML=config.xmlRequest["xml"]
-print(requestXML)
 body=requestXML.strip().split('$')
 
 
