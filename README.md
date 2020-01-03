@@ -16,10 +16,10 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
 How to deploy:
 
-1 - FTP to the PROV server as ntappadm.
+1 - FTP to the active PROV server as ntappadm.
 2 - Transfer the files to a folder like  "/var/mcp/bulk".
-1 - Unzip the files.
-2 - Inside of this folder execute "chmod 777 *"
+1 - Unzip the files as root.
+2 - Inside of this folder execute "chmod 777 *" as root.
 
 
 
@@ -35,8 +35,15 @@ will replace it with a variable.
 boundaries.
 6 - If you will use read file bulk, set your data into the "input_file_name"
 file. The program will execute the bulk for every line.
-6 - Execute the program with CLI.
+6 - Execute the program with CLI as root.
 6.1 - For the counter bulk "python counterBulk.py".
 6.2 - For the read file bulk "python readFileBulk.py".
 7 - Check soapOut.txt and failOut.txt files for outputs.
 8 - Remove all files from the server when the bulk completed!
+
+
+
+How to use with nohup to execute at background:
+
+nohup python counterBulk.py &
+nohup python readFileBulk.py &
