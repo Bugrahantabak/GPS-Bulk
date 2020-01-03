@@ -19,9 +19,9 @@ with using, modifying, or distributing this SOFTWARE PRODUCT.
 
 How to deploy:
 
-1 - Connect to the PROV server as ntappadm.
+1 - FTP to the PROV server as ntappadm.
 2 - Transfer the files to a folder like  "/var/mcp/bulk".
-1 - Unzip/Untar the files.
+1 - Unzip the files.
 2 - Inside of this folder execute "chmod 777 *"
 
 
@@ -42,4 +42,4 @@ file. The program will execute the bulk for every line.
 6.1 - For the counter bulk "python counterBulk.py".
 6.2 - For the read file bulk "python readFileBulk.py".
 7 - Check soapOut.txt and failOut.txt files for outputs.
-8 - Remove all files from server when the bulk completed!
+8 - Remove all files from the server when the bulk completed!

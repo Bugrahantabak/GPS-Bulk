@@ -1,7 +1,7 @@
 #! /usr/bin/python
 __author__ = 'Bugrahan Tabak'
 __version__ = 'v1.3'
-__date__ = '12.26.2019'
+__date__ = '2019'
 
 import datetime
 import sys
