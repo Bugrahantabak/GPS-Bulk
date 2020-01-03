@@ -9,19 +9,6 @@ sys.path.append('./venv/Lib')
 import requests
 import config
 
-'''
-#TODO: Update
-##################################################################
-How to use:
-1- Edit the PROV user name.
-2- Edit the PROV user password.
-3- Edit the PROV IP and service.
-4- Edit the body fields with your soap request. Your request should be inside of triple quotes (""").
-5- Set counter_from and counter_until for loop.
-6- Execute the program.
-7- Check soapOut.txt and failOut.txt files for outputs.
-##################################################################
-'''
 
 # PROV user name
 user = config.config["prov_user_name"]

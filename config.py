@@ -1,8 +1,3 @@
-comment = {
-  "how_to_use" : ""
-
-  }
-
 config =  {
     "prov_user_name" : "admin",
     "prov_user_password" : "admin",
