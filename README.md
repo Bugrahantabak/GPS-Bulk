@@ -25,15 +25,15 @@ How to deploy:
 
 How to use:
 
-1 - Open the config.py file by file editor.
+1 - Open the config.py file with file editor.
 2 - Edit the PROV user name and password.
 3 - Edit the PROV URL and service.
 4 - Edit the XML request of the XML field with your soap request. Your request
-should be inside of triple quotes ("""). For variable put a '$'. The program
-will replace it with a variable.
+should be inside of triple quotes ("""). For the variable put a '$'. Program
+will replace it with thea variable.
 5 - If you will use counter Bulk, set counter_from and counter_until for loop
 boundaries.
-6 - If you will use read file bulk, set your data into the "input_file_name"
+6 - If you will use read file bulk, put your data into the "input_file_name"
 file. The program will execute the bulk for every line.
 6 - Execute the program with CLI as root.
 6.1 - For the counter bulk "python counterBulk.py".
