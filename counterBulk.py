@@ -8,7 +8,7 @@ import sys
 sys.path.append('./venv/Lib')
 import requests
 import config
-
+print("###### Start!")
 
 # PROV user name
 user = config.config["prov_user_name"]
@@ -22,17 +22,17 @@ url = config.config["prov_url"]
 # DO NOT CHANGE - Header of the Soap file
 # headers = {'content-type': 'text/xml', 'SOAPAction': ''}
 headers = {'content-type': 'text/xml', 'SOAPAction': ''}
-
+print("###### Read xml")
 # Soap request body between """ """
 requestXML=config.xmlRequest["xml"]
 body=requestXML.strip().split('$')
-
+print(requestXML)
 
 # Counter from
 counter_from = int(config.counterBulkConfig["counter_from"])
 # Counter until
 counter_until = int(config.counterBulkConfig["counter_until"])
-
+print("###### Open log files")
 # Open output files for success logs (when the status_code is 2XX) and fail logs (when the status_code is NOT 2XX)
 try:
     file_soapOut = open(config.config["success_log_file_name"], 'a')
@@ -44,16 +44,17 @@ try:
 except OSError:
     print('Error: Unable to open fail file.')
     sys.exit(1)
-
+print("###### Insert date: "+str(datetime.datetime.now()))
 # Insert local timestamp to both files
 file_failOut.writelines('\n\n\n######################\n' + str(datetime.datetime.now()) + '\n######################\n\n')
 file_soapOut.writelines('\n\n\n######################\n' + str(datetime.datetime.now()) + '\n######################\n\n')
 
 def close_files():
   # Close files
+    print("###### Close files")
     file_soapOut.close()
     file_failOut.close()
-
+print("###### Send request")
 # Loop
 for i in range(counter_from, counter_until):
 
@@ -95,4 +96,4 @@ for i in range(counter_from, counter_until):
 close_files()
 
 # Done!
-print('Done!')
+print('###### Done!')

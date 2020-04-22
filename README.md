@@ -45,5 +45,5 @@ file. The program will execute the bulk for every line.
 
 How to use with nohup to execute at background:
 
-nohup python counterBulk.py &
-nohup python readFileBulk.py &
+nohup python -u counterBulk.py &
+nohup python -u readFileBulk.py &
